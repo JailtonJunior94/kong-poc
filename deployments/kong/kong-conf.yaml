@@ -1,0 +1,56 @@
+# Basic configuration for Kong without the ingress controller, using the Postgres subchart
+# This installation does not create an Ingress or LoadBalancer Service for
+# the Admin API. It requires port-forwards to access without further
+# configuration to add them, e.g.:
+# kubectl port-forward deploy/your-deployment-kong 8001:8001
+
+image:
+  repository: jailtonjunior/kong-admin
+  tag: 2.1.0
+
+env:
+  prefix: /kong_prefix/
+  database: "off"
+  plugins: bundled,hello
+  pluginserver_names: hello
+  pluginserver_hello_socket: /usr/local/kong/hello.socket
+  pluginserver_hello_start_cmd: /usr/local/bin/hello
+  pluginserver_hello_query_cmd: /usr/local/bin/hello -dump
+
+admin:
+  enabled: true
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+  tls:
+    parameters: []
+  labels:
+    enable-metrics: "true"
+
+postgresql:
+  enabled: false
+
+ingressController:
+  enabled: true
+  installCRDs: false
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/port: "8100"
+
+proxy:
+  type: NodePort
+
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+# controller:
+#   ingressClass: "kong"
+#   ingress:
+#     enabled: true
+#     annotations:
+#       konghq.com/protocols: "http"
