@@ -1,0 +1,32 @@
+_format_version: "3.0"
+services:
+- connect_timeout: 60000
+  host: localhost
+  name: test
+  path: /
+  port: 9000
+  protocol: http
+  read_timeout: 60000
+  retries: 5
+  routes:
+  - https_redirect_status_code: 426
+    methods:
+    - GET
+    - POST
+    name: test-api
+    path_handling: v0
+    paths:
+    - /test
+    plugins:
+    - config:
+        replace:
+          uri: /service/test
+      enabled: true
+      name: request-transformer
+    - config:
+        message: Hello my brother!
+      enabled: true
+      name: hello
+    preserve_host: false
+    protocols:
+    - http

@@ -1,19 +1,22 @@
 package main
 
 import (
+	"fmt"
+	"log"
+
 	"github.com/Kong/go-pdk"
 	"github.com/Kong/go-pdk/server"
 )
+
+var Version = "0.0.1"
+var Priority = 1
 
 func main() {
 	server.StartServer(New, Version, Priority)
 }
 
-var Version = "0.2"
-var Priority = 5000
-
 type Config struct {
-	Message string
+	Message string `json:"message"`
 }
 
 func New() interface{} {
@@ -21,9 +24,14 @@ func New() interface{} {
 }
 
 func (conf Config) Access(kong *pdk.PDK) {
+	host, err := kong.Request.GetHeader("host")
+	if err != nil {
+		log.Printf("Error reading 'host' header: %s", err.Error())
+	}
+
 	message := conf.Message
 	if message == "" {
 		message = "hello"
 	}
-	kong.Response.SetHeader("x-plugin", message)
+	kong.Response.SetHeader("x-hello-from-go", fmt.Sprintf("Go says %s to %s", message, host))
 }

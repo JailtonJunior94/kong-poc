@@ -6,7 +6,12 @@ COPY ./plugins/hello ./
 RUN go mod download && go build -o hello .
 
 FROM kong:3.4.0-ubuntu
+
+USER root
 COPY --from=builder ./go-plugins/hello /usr/local/bin/hello
+RUN luarocks install kong-oidc && \
+    luarocks install kong-jwt2header && \
+    luarocks install kong-upstream-jwt
 
 USER kong
 ENTRYPOINT ["/docker-entrypoint.sh"]

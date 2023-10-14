@@ -5,7 +5,7 @@ services:
     container_name: kong-gateway
     environment:
       - KONG_DATABASE=off
-      - KONG_PLUGINS=hello
+      - KONG_PLUGINS=bundled,hello
       - KONG_PLUGINSERVER_NAMES=hello
       - KONG_PLUGINSERVER_HELLO_SOCKET=/usr/local/kong/hello.socket
       - KONG_PLUGINSERVER_HELLO_START_CMD=/usr/local/bin/hello
@@ -17,7 +17,7 @@ services:
       - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
       - KONG_ADMIN_GUI_URL=http://localhost:8002
       - KONG_HEADERS=off
-    # command: "kong start -c /etc/kong/kong.conf"
+      - KONG_DECLARATIVE_CONFIG=/kong/config.yml
     ports:
       - "8000:8000"
       - "8443:8443"
@@ -27,3 +27,9 @@ services:
       - "8445:8445"
       - "8003:8003"
       - "8004:8004"
+    healthcheck:
+      test: ["CMD", "wget", "-O-", "http://kong:8001/status"]
+      interval: 5s
+      retries: 10
+    volumes:
+      - ./config.yml:/kong/config.yml

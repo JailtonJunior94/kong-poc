@@ -21,32 +21,32 @@ spec:
         language: golang
     spec:
       containers:
-        - image: claudioed/bets:latest
-          imagePullPolicy: Always
-          envFrom:
-            - configMapRef:
-                name: bets-config
-          resources:
-            requests:
-              memory: "5Mi"
-              cpu: "100m"
-            limits:
-              memory: "10Mi"
-              cpu: "200m"
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 9999
-              scheme: HTTP
-            initialDelaySeconds: 1
-          name: bets
-          ports:
-            - containerPort: 9999
-              name: http
-              protocol: TCP
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 9999
-              scheme: HTTP
-            initialDelaySeconds: 1
+      - image: claudioed/bets:latest
+        imagePullPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: bets-config
+        resources:
+          requests:
+            memory: "5Mi"
+            cpu: "100m"
+          limits:
+            memory: "10Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9999
+            scheme: HTTP
+          initialDelaySeconds: 1
+        name: bets
+        ports:
+        - containerPort: 9999
+          name: http
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 9999
+            scheme: HTTP
+          initialDelaySeconds: 1

@@ -6,7 +6,7 @@
 
 image:
   repository: jailtonjunior/kong-admin
-  tag: 2.1.0
+  tag: 3.0.1
 
 env:
   prefix: /kong_prefix/
