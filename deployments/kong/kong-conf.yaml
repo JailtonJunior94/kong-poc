@@ -1,6 +1,6 @@
 image:
   repository: jailtonjunior/kong_poc
-  tag: 1.0.0
+  tag: 2.0.0
 
 env:
   log_level: debug
