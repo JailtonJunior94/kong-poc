@@ -8,8 +8,8 @@ import (
 	"github.com/Kong/go-pdk/server"
 )
 
-var Version = "0.2"
-var Priority = 1
+const Version = "1.0.0"
+const Priority = 2
 
 func main() {
 	server.StartServer(New, Version, Priority)

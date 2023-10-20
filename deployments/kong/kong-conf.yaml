@@ -1,10 +1,10 @@
 image:
-  repository: jailtonjunior/kong-admin
-  tag: 6.0.0
+  repository: jailtonjunior/kong_poc
+  tag: 1.0.0
 
 env:
   log_level: debug
-  database: "off"
+  database: postgres
   plugins: bundled,hello,auth
   pluginserver_names: hello,auth
   pluginserver_hello_socket: /usr/local/kong/hello.socket
@@ -23,39 +23,24 @@ admin:
     containerPort: 8001
   tls:
     parameters: []
-  labels:
-    enable-metrics: "true"
+
+proxy:
+  servicePort: 8000
+  containerPort: 8000
 
 postgresql:
-  enabled: false
+  enabled: true
+  auth:
+    username: kong
+    database: kong
+    password: kong
+    postgresPassword: kong
 
 ingressController:
   enabled: true
   installCRDs: false
 
-podAnnotations:
-  prometheus.io/scrape: "true"
-  prometheus.io/port: "8100"
-
-proxy:
-  type: NodePort
-
 autoscaling:
   enabled: true
   minReplicas: 1
-  maxReplicas: 10
-  targetCPUUtilizationPercentage: 70
-
-# controller:
-#   ingressClass: "kong"
-#   ingress:
-#     enabled: true
-#     annotations:
-#       konghq.com/protocols: "http"
-
-# plugins:
-#   configMaps:
-#   - name: hello
-#     pluginName: hello
-#   - name: auth
-#     pluginName: auth
+  maxReplicas: 1
