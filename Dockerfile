@@ -2,13 +2,19 @@ FROM golang:1.21 AS builder
 
 RUN mkdir /go-plugins
 WORKDIR /go-plugins
+
 COPY ./plugins/hello ./
+COPY ./plugins/auth ./
+
 RUN go mod download && go build -o hello .
+RUN go mod download && go build -o auth .
 
 FROM kong:3.4.0-ubuntu
-
 USER root
+
 COPY --from=builder ./go-plugins/hello /usr/local/bin/hello
+COPY --from=builder ./go-plugins/auth /usr/local/bin/auth
+
 RUN luarocks install kong-oidc && \
     luarocks install kong-jwt2header && \
     luarocks install kong-upstream-jwt

@@ -1,4 +1,4 @@
-module github.com/jailtonjunior94/hello
+module github.com/jailtonjunior94/auth
 
 go 1.21.3
 

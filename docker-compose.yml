@@ -5,11 +5,16 @@ services:
     container_name: kong-gateway
     environment:
       - KONG_DATABASE=off
-      - KONG_PLUGINS=bundled,hello
-      - KONG_PLUGINSERVER_NAMES=hello
+      - KONG_PLUGINS=bundled,hello,auth
+      - KONG_PLUGINSERVER_NAMES=hello,auth
       - KONG_PLUGINSERVER_HELLO_SOCKET=/usr/local/kong/hello.socket
       - KONG_PLUGINSERVER_HELLO_START_CMD=/usr/local/bin/hello
       - KONG_PLUGINSERVER_HELLO_QUERY_CMD=/usr/local/bin/hello -dump
+      
+
+      - KONG_PLUGINSERVER_AUTH_SOCKET=/usr/local/kong/auth.socket
+      - KONG_PLUGINSERVER_AUTH_START_CMD=/usr/local/bin/auth
+      - KONG_PLUGINSERVER_AUTH_QUERY_CMD=/usr/local/bin/auth -dump
       - KONG_PROXY_ACCESS_LOG=/dev/stdout
       - KONG_ADMIN_ACCESS_LOG=/dev/stdout
       - KONG_PROXY_ERROR_LOG=/dev/stderr

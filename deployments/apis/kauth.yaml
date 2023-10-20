@@ -1,7 +1,7 @@
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
-  name: hello-address
+  name: auth-address
 config:
-  message: hello
-plugin: hello
+  message: auth-hello
+plugin: auth

@@ -27,6 +27,10 @@ services:
         message: Hello my brother!
       enabled: true
       name: hello
+    - config:
+        message: Auth!
+      enabled: true
+      name: auth
     preserve_host: false
     protocols:
     - http

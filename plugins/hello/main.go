@@ -8,7 +8,7 @@ import (
 	"github.com/Kong/go-pdk/server"
 )
 
-var Version = "0.0.1"
+var Version = "0.2"
 var Priority = 1
 
 func main() {
