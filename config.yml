@@ -1,36 +1,45 @@
 _format_version: "3.0"
+_transform: true
+
 services:
-- connect_timeout: 60000
-  host: localhost
-  name: test
-  path: /
-  port: 9000
-  protocol: http
-  read_timeout: 60000
-  retries: 5
+- name: mockbin-service-1
+  url: http://mockbin.com/request
   routes:
-  - https_redirect_status_code: 426
-    methods:
-    - GET
-    - POST
-    name: test-api
-    path_handling: v0
-    paths:
-    - /test
-    plugins:
-    - config:
-        replace:
-          uri: /service/test
-      enabled: true
-      name: request-transformer
-    - config:
-        message: Hello my brother!
-      enabled: true
-      name: hello
-    - config:
-        message: Auth!
-      enabled: true
-      name: auth
-    preserve_host: false
+  - name: mockbin-url-1
     protocols:
-    - http
+    - "http"
+    - "https"
+    paths:
+    - /
+  plugins:
+  - name: auth
+    config:
+      header_key: header_key
+
+- name: example-service
+  url: https://api.github.com/repos/kong/kong
+  routes:
+  - name: github-yaml
+    protocols:
+    - "http"
+    - "https"
+    paths:
+    - /github
+  plugins:
+  - name: auth
+    config:
+      header_key: header_key
+
+- name: pokemon
+  url: https://pokeapi.co/api/v2/evolution-chain/67/
+  routes:
+  - name: pokemon-route
+    protocols:
+    - "http"
+    - "https"
+    paths:
+    - /pokemon
+  plugins:
+  - name: auth
+    config:
+      header_key: header_key

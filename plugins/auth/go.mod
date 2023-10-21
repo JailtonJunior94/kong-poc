@@ -1,6 +1,6 @@
 module github.com/jailtonjunior94/auth
 
-go 1.21.3
+go 1.19
 
 require github.com/Kong/go-pdk v0.10.0
 

@@ -27,5 +27,5 @@ jobs:
           file: Dockerfile
           push: true
           tags: |
-            ${{ env.DOCKER_USERNAME }}/kong_poc:latest
-            ${{ env.DOCKER_USERNAME }}/kong_poc:2.0.0
+            ${{ env.DOCKER_USERNAME }}/kong-poc:latest
+            ${{ env.DOCKER_USERNAME }}/kong-poc:2.0.0

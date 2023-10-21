@@ -1,18 +1,20 @@
-FROM golang:1.21 AS builder
+FROM golang:1.19-alpine3.15 AS plugin-builder
+WORKDIR /builder
 
-RUN mkdir /go-plugins
-WORKDIR /go-plugins
-
-COPY ./plugins/hello ./
 COPY ./plugins/auth ./
+RUN apk add make
+RUN make build
 
-RUN go mod download && GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o hello .
-RUN go mod download && GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o auth .
-
-FROM kong/kong-gateway:3.2.2.5-alpine
-USER root
-
-COPY --from=builder ./go-plugins/hello /usr/local/bin/hello
-COPY --from=builder ./go-plugins/auth /usr/local/bin/auth
+FROM kong:3.1.0-alpine
+COPY --from=plugin-builder /builder/auth /kong/go-plugins/auth
 
 USER kong
+ENTRYPOINT ["/docker-entrypoint.sh", "kong", "docker-start"]
+
+EXPOSE 8000
+EXPOSE 8001
+EXPOSE 8443
+EXPOSE 8444
+
+STOPSIGNAL SIGQUIT
+HEALTHCHECK --interval=10s --timeout=10s --retries=10 CMD kong health

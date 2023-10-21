@@ -4,25 +4,19 @@ services:
     build: .
     container_name: kong-gateway
     environment:
+      - KONG_HEADERS=off
       - KONG_DATABASE=off
-      - KONG_PLUGINS=bundled,hello,auth
-      - KONG_PLUGINSERVER_NAMES=hello,auth
-      - KONG_PLUGINSERVER_HELLO_SOCKET=/usr/local/kong/hello.socket
-      - KONG_PLUGINSERVER_HELLO_START_CMD=/usr/local/bin/hello
-      - KONG_PLUGINSERVER_HELLO_QUERY_CMD=/usr/local/bin/hello -dump
-      
-
-      - KONG_PLUGINSERVER_AUTH_SOCKET=/usr/local/kong/auth.socket
-      - KONG_PLUGINSERVER_AUTH_START_CMD=/usr/local/bin/auth
-      - KONG_PLUGINSERVER_AUTH_QUERY_CMD=/usr/local/bin/auth -dump
+      - KONG_DECLARATIVE_CONFIG=/kong/config.yml
+      - KONG_ADMIN_GUI_URL=http://localhost:8002
+      - KONG_PLUGINS=bundled,auth
+      - KONG_PLUGINSERVER_NAMES=auth
+      - KONG_PLUGINSERVER_AUTH_START_CMD=/kong/go-plugins/auth
+      - KONG_PLUGINSERVER_AUTH_QUERY_CMD=/kong/go-plugins/auth -dump
       - KONG_PROXY_ACCESS_LOG=/dev/stdout
       - KONG_ADMIN_ACCESS_LOG=/dev/stdout
       - KONG_PROXY_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_ERROR_LOG=/dev/stderr
       - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
-      - KONG_ADMIN_GUI_URL=http://localhost:8002
-      - KONG_HEADERS=off
-      - KONG_DECLARATIVE_CONFIG=/kong/config.yml
     ports:
       - "8000:8000"
       - "8443:8443"

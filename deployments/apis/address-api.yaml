@@ -10,10 +10,10 @@ spec:
   rules:
   - http:
       paths:
-      - path: /address
+      - path: /api
         pathType: Prefix
         backend:
           service:
-            name: address-address-api
+            name: financial-service
             port:
               number: 80
