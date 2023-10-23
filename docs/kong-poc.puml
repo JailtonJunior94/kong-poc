@@ -1,0 +1,34 @@
+@startuml kong-poc
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+!define DEVICONS https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/devicons
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v16.0/dist
+
+!include AWSPuml/AWSCommon.puml
+!include AWSPuml/InternetOfThings/IoTRule.puml
+!include AWSPuml/Analytics/KinesisDataStreams.puml
+!include AWSPuml/ApplicationIntegration/SimpleQueueService.puml
+!include DEVICONS/go.puml
+!include DEVICONS/mongodb.puml
+!include DEVICONS/apple.puml
+
+left to right direction
+
+
+System_Boundary(fluxo, "Kong PoC") { 
+    Container(Kong, "Kong API Gateway", "Gateway", "API Gateway responsável por direcionar requisições", "HTTPS/JSON")
+
+
+    KinesisDataStreams(eventStream, "IoT Events", "2 shards")
+
+
+    ' Container(API, "API", "Golang", "API de gestão de planetas e filmes Star Wars", "Golang")    
+    ' ContainerDb(StarWarsDB, "StarWars DB", "MSSQL", "Armazena dados de planetas e filmes Star Wars", "T-SQL")
+
+    ' Rel(API, StarWarsAPI, "Obtém dados dos planetas e filmes em", "HTTP/JSON")
+    ' Rel_R(API, StarWarsDB, "Insere dados de planetas e filmes em", "T-SQL")
+}
+
+@enduml
