@@ -7,28 +7,25 @@
 !define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v16.0/dist
 
 !include AWSPuml/AWSCommon.puml
-!include AWSPuml/InternetOfThings/IoTRule.puml
-!include AWSPuml/Analytics/KinesisDataStreams.puml
-!include AWSPuml/ApplicationIntegration/SimpleQueueService.puml
+!include AWSPuml/Compute/Lambda.puml
+!include AWSPuml/Database/DynamoDB.puml
 !include DEVICONS/go.puml
 !include DEVICONS/mongodb.puml
 !include DEVICONS/apple.puml
 
 left to right direction
 
-
 System_Boundary(fluxo, "Kong PoC") { 
+    Container(Apps, "Apps", "Contexto de consumidores da API", "Representação dos apps que utilizam as APIs", "HTTPS/JSON", )
     Container(Kong, "Kong API Gateway", "Gateway", "API Gateway responsável por direcionar requisições", "HTTPS/JSON")
+    Lambda(ValidateAPIKey, "Check API Key", "Responsável por receber e validar API KEY")
+    DynamoDB(APIKeyTable, "API KEY Table", "Responsável por armazenar API Keys")
+    Container(APIs, "APIs", "Contexto de Banking", "Representação de APIs internas da Stone", "HTTPS/JSON")
 
-
-    KinesisDataStreams(eventStream, "IoT Events", "2 shards")
-
-
-    ' Container(API, "API", "Golang", "API de gestão de planetas e filmes Star Wars", "Golang")    
-    ' ContainerDb(StarWarsDB, "StarWars DB", "MSSQL", "Armazena dados de planetas e filmes Star Wars", "T-SQL")
-
-    ' Rel(API, StarWarsAPI, "Obtém dados dos planetas e filmes em", "HTTP/JSON")
-    ' Rel_R(API, StarWarsDB, "Insere dados de planetas e filmes em", "T-SQL")
+    Rel(Apps, Kong, "Solicita visualização do extrato para", "HTTP/JSON")
+    Rel_R(Kong, ValidateAPIKey, "Kong Plugin valida API-KEY para", "HTTP/JSON")
+    Rel(ValidateAPIKey, APIKeyTable, "Recupera dado da API-KEY em", "HTTP/JSON")
+    Rel(Kong, APIs, "Redireciona requisição para", "HTTP/JSON")
 }
 
 @enduml
