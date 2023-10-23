@@ -1,7 +1,7 @@
 apiVersion: configuration.konghq.com/v1
-kind: KongClusterPlugin
+kind: KongPlugin
 metadata:
   name: auth-address
 config:
-  message: auth-hello
+  header_key: header_key
 plugin: auth

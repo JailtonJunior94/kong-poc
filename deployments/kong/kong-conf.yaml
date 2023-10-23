@@ -1,19 +1,15 @@
 image:
-  repository: jailtonjunior/kong_poc
-  tag: 2.0.0
+  repository: jailtonjunior/kong-poc
+  tag: 1.0.0
 
 env:
   log_level: debug
-  database: postgres
-  plugins: bundled,hello,auth
-  pluginserver_names: hello,auth
-  pluginserver_hello_socket: /usr/local/kong/hello.socket
-  pluginserver_hello_start_cmd: /usr/local/bin/hello
-  pluginserver_hello_query_cmd: /usr/local/bin/hello -dump
-
-  pluginserver_auth_socket: /usr/local/kong/auth.socket
-  pluginserver_auth_start_cmd: /usr/local/bin/auth
-  pluginserver_auth_query_cmd: /usr/local/bin/auth -dump
+  database: "off"
+  plugins: bundled,auth
+  pluginserver_names: auth
+  pluginserver_auth_socket: /kong_prefix/auth.socket
+  pluginserver_auth_query_cmd: /kong/go-plugins/auth -dump
+  pluginserver_auth_start_cmd: /kong/go-plugins/auth
 
 admin:
   enabled: true
@@ -28,13 +24,13 @@ proxy:
   servicePort: 8000
   containerPort: 8000
 
-postgresql:
-  enabled: true
-  auth:
-    username: kong
-    database: kong
-    password: kong
-    postgresPassword: kong
+# postgresql:
+#   enabled: true
+#   auth:
+#     username: kong
+#     database: kong
+#     password: kong
+#     postgresPassword: kong
 
 ingressController:
   enabled: true
