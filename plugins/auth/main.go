@@ -28,7 +28,6 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed start %s plugin", PluginName)
 	}
-
 }
 
 func New() interface{} {
