@@ -23,24 +23,31 @@ jobs:
         run: go mod verify
 
       - name: Build
+        working-directory: /plugins/auth
         run: go build -v ./...
 
       - name: Run go vet
+        working-directory: /plugins/auth
         run: go vet ./...
 
       - name: Install staticcheck
+        working-directory: /plugins/auth
         run: go install honnef.co/go/tools/cmd/staticcheck@latest
 
       - name: Run staticcheck
+        working-directory: /plugins/auth
         run: staticcheck ./...
 
       - name: Install golint
+        working-directory: /plugins/auth
         run: go install golang.org/x/lint/golint@latest
 
       - name: Run golint
+        working-directory: /plugins/auth
         run: golint ./...
 
       - name: Run tests
+        working-directory: /plugins/auth
         run: go test -race -vet=off ./...
 
       - name: Docker Login
